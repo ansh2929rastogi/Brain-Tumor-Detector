@@ -1,6 +1,5 @@
 Flask
-tensorflow-cpu
+tensorflow
 tf-keras
 Pillow
 numpy
-gunicorn

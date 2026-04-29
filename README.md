@@ -3,14 +3,8 @@
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-3.0-green.svg)](https://flask.palletsprojects.com/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16-orange.svg)](https://www.tensorflow.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-NeuroScan is a state-of-the-art medical imaging application that utilizes Deep Learning to detect and classify brain tumors from MRI scans. It provides healthcare professionals and researchers with a fast, reliable, and highly visual preliminary analysis tool.
-
----
-
-## 🌟 Live Demo
-🔗 **[Live Application Link will be here]**
+NeuroScan is a state-of-the-art medical imaging application that utilizes Deep Learning to detect and classify brain tumors from MRI scans. It provides a fast, reliable, and highly visual analysis tool using a custom-trained CNN.
 
 ---
 
@@ -25,22 +19,19 @@ NeuroScan is a state-of-the-art medical imaging application that utilizes Deep L
   - Interactive **Glassmorphism** UI.
   - Real-time probability visualization via dynamic charts.
   - Intelligent confidence-scoring system.
-- **Developer-Centric Architecture**:
-  - Legacy model compatibility (Keras 2 to Keras 3 auto-patching).
-  - Production-ready with Gunicorn support.
+- **Custom Keras Compatibility**: Auto-patches legacy model weights to work with modern Keras 3 environments.
 
-## 🛠️ Architecture & Tech Stack
+## 🛠️ Tech Stack
 
 | Component | Technology |
 | :--- | :--- |
-| **Model** | Convolutional Neural Network (CNN) / VGG16 based |
+| **Model** | Convolutional Neural Network (CNN) |
 | **Backend** | Flask (Python) |
 | **Deep Learning** | TensorFlow & Keras |
 | **Image Processing** | PIL (Pillow) & NumPy |
-| **Frontend** | HTML5, CSS3 (Vanilla), JavaScript |
-| **Deployment** | Render / Gunicorn |
+| **Frontend** | HTML5, CSS3, JavaScript |
 
-## 📥 Installation & Setup
+## 📥 Local Installation & Setup
 
 1. **Clone the Project**
    ```bash
@@ -55,23 +46,20 @@ NeuroScan is a state-of-the-art medical imaging application that utilizes Deep L
    pip install -r requirements.txt
    ```
 
-3. **Run Locally**
+3. **Run the Application**
    ```bash
    python main.py
    ```
-   *Access at `http://127.0.0.1:5000`*
+   *Open your browser and navigate to `http://127.0.0.1:5000`*
 
-## 🧬 Model Insights
+## 🧬 Model Details
 
-The underlying model uses a deep architecture optimized for MRI textures. It processes images at **128x128** resolution and outputs soft-max probabilities across all classes. To handle modern environment mismatches, the app includes a custom layer deserializer to ensure the legacy weights load perfectly.
+The model processes images at **128x128** resolution. It includes custom layer wrappers (`FixedDense`, `FixedInputLayer`) to ensure seamless loading of models trained in legacy Keras versions on newer TensorFlow systems.
 
 ---
-
-## 🤝 Contributing
-Contributions are welcome! If you have suggestions for model improvement or UI enhancements, feel free to fork this repo and submit a PR.
 
 ## 📜 Disclaimer
-*This tool is for educational and research purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of a physician for any questions regarding a medical condition.*
+*This tool is for educational purposes only. Always consult a medical professional for clinical diagnosis.*
 
 ---
-Created with ❤️ by [Sanskar Rastogi](https://github.com/ansh2929rastogi)
+Created by [Sanskar Rastogi](https://github.com/ansh2929rastogi)
