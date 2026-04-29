@@ -8,6 +8,15 @@ NeuroScan is a state-of-the-art medical imaging application that utilizes Deep L
 
 ---
 
+## 🖼️ Application Preview
+
+<p align="center">
+  <img src="assets/preview1.png" width="48%" alt="NeuroScan Upload Interface" />
+  <img src="assets/preview2.png" width="48%" alt="NeuroScan Prediction Result" />
+</p>
+
+---
+
 ## 🚀 Key Features
 
 - **Multi-Class Detection**: Precisely identifies 4 distinct categories:
