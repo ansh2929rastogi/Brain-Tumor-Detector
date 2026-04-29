@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroScan - Brain Tumor Detection API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1; --primary-light: #818cf8; --secondary: #ec4899;
+            --bg-color: #0f172a; --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1); --text-main: #f8fafc;
+            --text-muted: #94a3b8; --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif; background-color: var(--bg-color);
+            background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.15) 0px, transparent 50%);
+            color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+        }
+        .container { width: 100%; max-width: 1000px; padding: 2rem; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 3rem; }
+        h1 { font-family: 'Outfit', sans-serif; font-size: 3.5rem; font-weight: 800; background: linear-gradient(to right, var(--primary-light), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .upload-area { border: 2px dashed var(--primary-light); border-radius: 16px; padding: 3rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(99, 102, 241, 0.05); }
+        .upload-area:hover { border-color: var(--secondary); background: rgba(99, 102, 241, 0.15); }
+        input[type="file"] { display: none; }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 12px 32px; font-weight: 600; border-radius: 50px; cursor: pointer; transition: 0.3s; margin-top: 1.5rem; }
+        .results-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2.5rem; margin-top: 2rem; }
+        .image-preview img { width: 100%; border-radius: 16px; border: 1px solid var(--glass-border); }
+        .confidence-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; }
+        .high-conf { color: var(--success); border: 1px solid var(--success); }
+        .low-conf { color: var(--warning); border: 1px solid var(--warning); }
+        .bar-row { display: flex; align-items: center; margin-bottom: 0.8rem; }
+        .bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; margin: 0 1rem; overflow: hidden; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: width 1s ease-out; }
+        .error-message { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); padding: 1rem; border-radius: 12px; margin-bottom: 2rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header><h1>NeuroScan AI</h1><p style="color:var(--text-muted)">Advanced MRI Brain Tumor Classification</p></header>
+        {% if not result %}
+        <div class="glass-panel">
+            {% if error %}<div class="error-message"><strong>Error:</strong> {{ error }}</div>{% endif %}
+            <form action="/predict" method="post" enctype="multipart/form-data" id="upload-form">
+                <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                    <span style="font-size:3rem">🧠</span>
+                    <h3>Click to upload MRI scan</h3>
+                    <input type="file" id="file-input" name="image" accept="image/*" required onchange="this.form.submit()">
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <div class="glass-panel">
+            <div class="results-container">
+                <div class="image-preview"><img src="{{ result.image_data }}"></div>
+                <div class="result-details">
+                    <h2 style="font-family:'Outfit'">{{ result.info.icon }} {{ result.prediction }}</h2>
+                    <div class="confidence-badge {{ 'low-conf' if result.low_confidence else 'high-conf' }}">
+                        {{ 'Low' if result.low_confidence else 'High' }} Confidence ({{ result.confidence }}%)
+                    </div>
+                    <p style="color:var(--text-muted); margin-bottom:2rem">{{ result.info.description }}</p>
+                    <h4 style="margin-bottom:1rem">Class Probabilities</h4>
+                    {% for cls in result.class_probs %}
+                    <div class="bar-row">
+                        <div style="width:100px;font-size:0.9rem">{{ cls.label }}</div>
+                        <div class="bar-track"><div class="bar-fill" style="width:{{ cls.prob }}%"></div></div>
+                        <div style="width:50px;text-align:right;font-size:0.9rem">{{ cls.prob }}%</div>
+                    </div>
+                    {% endfor %}
+                    <a href="/" class="btn" style="display:inline-block;text-decoration:none;text-align:center;width:100%">New Scan</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
